@@ -1,8 +1,8 @@
 # Stock Trading Simulator
 
-## Play as a stock trader and try to reach $1M.
+## Play as a stock trader and earn money!
 
-As a stock trader, your goal is to reach **$1,000,000** in the shortest time possible. You begin with $100,000. 
+As a student stock trader, you begin the game with $100. Your goal is to reach **$1,000** in the shortest time possible.  
 
 
 ##User Stories
@@ -16,8 +16,9 @@ As a stock trader, your goal is to reach **$1,000,000** in the shortest time pos
 
 |Command|Hotkey|Description|
 |---|---|---|
-| "list" | l | List the stock prices |
-| "check" | c | Check your portfolio|
-| "buy \<ticker> \<#>" | b \<ticker> \<#>| Buys the stock at the ask price (eg. "buy GME 100")|
-| "sell \<ticker> \<#>" | s \<ticker> \<#>| Sell the stock at the bid price|
-| "next" | n | Advance to next day for new prices|
+| "list" | L | List the stock prices |
+| "check" | C | Check your portfolio|
+| "buy \<ticker> \<#>" | B \<ticker> \<#>| Buys the stock at the ask price (eg. "buy GME 100")|
+| "sell \<ticker> \<#>" | S \<ticker> \<#>| Sell the stock at the bid price|
+| "next" | N | Advance to next day for new prices|
+| "quit" | Q | Quit the game|
