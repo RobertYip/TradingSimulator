@@ -137,7 +137,7 @@ public class TradingApp {
 
     // MODIFIES: Portfolio
     // EFFECTS: returns true if buying stock is successful, false if fails
-    private Boolean buyProcessed(String ticker) {
+    private boolean buyProcessed(String ticker) {
         int quantityToBuy;
         int stockPrice;
 
@@ -199,7 +199,7 @@ public class TradingApp {
 
     // MODIFIES: Portfolio
     // EFFECTS: returns true if selling stock is successful, false if fails
-    private Boolean sellQuantity(String ticker) {
+    private boolean sellQuantity(String ticker) {
         int quantityToSell;
         int marketPrice;
         marketPrice = stockMarket.getStock(ticker).getAsk();

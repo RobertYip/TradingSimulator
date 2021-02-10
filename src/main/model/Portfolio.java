@@ -29,7 +29,7 @@ public class Portfolio {
     // MODIFIES: this
     // EFFECTS: return false if not enough cash on hand.
     //          return true if sufficient cash
-    public Boolean isCashSufficient(int cost) {
+    public boolean isCashSufficient(int cost) {
         return cash >= cost;
     }
 
@@ -43,7 +43,7 @@ public class Portfolio {
     // REQUIRES: quantity > 0, price > 0
     // MODIFIES: this
     // EFFECTS: updates holding if exist in holdings, else add new holding to holdings
-    public Boolean addStock(String ticker, int quantity, int price) {
+    public boolean addStock(String ticker, int quantity, int price) {
         Holding foundHolding = getHolding(ticker);
         int cost = quantity * price;
 
@@ -99,7 +99,7 @@ public class Portfolio {
     // MODIFIES: this
     // EFFECTS: return true if sufficient quantity in portfolio to sell
     //          return false if stock not in portfolio or not enough quantity in portfolio
-    public Boolean isQuantitySufficient(String ticker, int quantity) {
+    public boolean isQuantitySufficient(String ticker, int quantity) {
         Holding holding = getHolding(ticker);
 
         if (holding != null) {

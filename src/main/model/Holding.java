@@ -41,15 +41,13 @@ public class Holding {
     public void removeQuantity(int quantity) {
         if (isQuantitySufficient(quantity)) {
             this.quantity -= quantity;
-        } else {
-            System.out.println("Insufficient quantity in holding.");
         }
     }
 
     // REQUIRES: quantity > 0
     // MODIFIES: this
     // EFFECTS: return true if sufficient quantity in holding
-    public Boolean isQuantitySufficient(int quantity) {
+    public boolean isQuantitySufficient(int quantity) {
         return this.quantity >= quantity;
     }
 
