@@ -13,20 +13,21 @@ public class TestStock {
     private Stock testStock;
 
     @BeforeEach
-    void setup() {
+    public void setup() {
         testStock = new Stock(TEST_TICKER, TEST_NAME, TEST_PRICE, TEST_GROWTH);
     }
 
     @Test
-    void testGetters(){
-        assertEquals(TEST_TICKER,testStock.getTicker());
-        assertEquals(TEST_NAME,testStock.getName());
-        assertEquals(TEST_PRICE,testStock.getBid());
+    public void testGetters() {
+        assertEquals(TEST_TICKER, testStock.getTicker());
+        assertEquals(TEST_NAME, testStock.getName());
+        assertEquals(TEST_PRICE, testStock.getBid());
         //assertEquals(TEST_TICKER,testStock.getAsk());
-        assertEquals(TEST_GROWTH,testStock.getGrowth());
+        assertEquals(TEST_GROWTH, testStock.getGrowth());
     }
+
     @Test
-    void testConstructor() {
+    public void testConstructor() {
         assertEquals(TEST_TICKER, testStock.getTicker());
         assertEquals(TEST_NAME, testStock.getName());
         //assertEquals(TEST_PRICE, testStock.getBid()); calc new daily added random
@@ -34,7 +35,7 @@ public class TestStock {
     }
 
     @Test
-    void testCalcGrowth() {
+    public void testCalcGrowth() {
         int testResult = (int) (TEST_PRICE * TEST_GROWTH);
 
         assertEquals(TEST_PRICE, testStock.getBid());
@@ -44,12 +45,19 @@ public class TestStock {
     }
 
     @Test
-    void testCalcRandom(){
-
+    public void testCalcRandomNumber() {
+        int minRange = 0;
+        int maxRange = 10;
+        int testNumber;
+        // Test random number is between 0 to 10 through loop
+        for (int i = 0; i < 100; i++){
+            testNumber = testStock.getRandomNumber();
+            assertTrue(minRange <= testNumber && testNumber <= maxRange);
+        }
     }
 
     @Test
-    void testCalcSpread(){
+    public void testCalcSpread() {
 
     }
 }

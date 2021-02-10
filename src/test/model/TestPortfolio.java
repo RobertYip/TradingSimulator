@@ -10,24 +10,36 @@ public class TestPortfolio {
     private Portfolio testP;
 
     @BeforeEach
-    void setup() {
+    public void setup() {
         testP = new Portfolio(CASH);
     }
 
     @Test
-    void testConstructor() {
+    public void testConstructor() {
         assertEquals(CASH, testP.getCash());
-
-        //TODO 1: test holdings ArrayList?
+        assertTrue(testP.getHoldings().isEmpty());
+        assertEquals(0, testP.getHoldings().size());
     }
 
     @Test
-    void testGetCash() {
+    public void testGetCash() {
         assertEquals(CASH, testP.getCash());
     }
 
     @Test
-    void testIsCashSufficient() {
+    public void testGetHoldings() {
+        //Test Empty
+        assertTrue(testP.getHoldings().isEmpty());
+        assertEquals(0, testP.getHoldings().size());
+        //Add a holding
+        assertTrue(testP.addStock("AAA", 10, 10));
+
+        assertFalse(testP.getHoldings().isEmpty());
+        assertEquals(1, testP.getHoldings().size());
+    }
+
+    @Test
+    public void testIsCashSufficient() {
         assertTrue(testP.isCashSufficient(50));
         assertTrue(testP.isCashSufficient(99));
         assertTrue(testP.isCashSufficient(100));
@@ -36,7 +48,7 @@ public class TestPortfolio {
     }
 
     @Test
-    void testDeductCash() {
+    public void testDeductCash() {
         int currentCash = CASH;
 
         testP.deductCash(1);
@@ -53,13 +65,13 @@ public class TestPortfolio {
     }
 
     @Test
-    void testAddStockInsufficientCash() {
+    public void testAddStockInsufficientCash() {
         assertFalse(testP.addStock("AAA", 10, 100));
         assertFalse(testP.addStock("AAA", 101, 1));
     }
 
     @Test
-    void testAddStockNew() {
+    public void testAddStockNew() {
         int currentCash = CASH;
         // Stock 1
         String ticker = "AAA";
@@ -76,7 +88,7 @@ public class TestPortfolio {
         assertTrue(testP.addStock(ticker, quantity, price));
         assertTrue(testP.addStock(ticker2, quantity2, price2));
 
-        // Teset cash
+        // Test cash
         currentCash = currentCash - cost - cost2;
         assertEquals(currentCash, testP.getCash());
 
@@ -123,6 +135,72 @@ public class TestPortfolio {
         assertEquals(newQuantity, testH.getQuantity());
     }
 
+    @Test
+    public void testSellStock() {
+        int testPrice;
+        int testQuantity;
 
+        String ticker = "AAA";
+        int initPrice = 3;
+        int initQuantity = 5;
+        int cash = CASH;
+
+        // Setup, add a holding
+        testP.addStock(ticker, initQuantity, initPrice);
+        cash -= initPrice * initQuantity;
+
+        // Test sell 1
+        testPrice = 1;
+        testQuantity = 2;
+        testP.sellStock(ticker, testQuantity, testPrice);
+        cash += testPrice * testQuantity;
+        assertEquals(cash, testP.getCash());
+        assertEquals(3, testP.getHolding(ticker).getQuantity());
+
+        // Test sell all
+        testPrice = 1;
+        testQuantity = 3;
+        testP.sellStock(ticker, testQuantity, testPrice);
+        cash += testPrice * testQuantity;
+        assertEquals(cash, testP.getCash());
+        assertTrue(testP.getHoldings().isEmpty());
+    }
+
+    @Test
+    public void testRemoveFromPortfolio() {
+        String ticker = "AAA";
+        int price = 3;
+        int quantity = 5;
+
+        // Setup, add a holding
+        testP.addStock(ticker, quantity, price);
+        assertNotNull(testP.getHolding(ticker));
+
+        // Test it is removed
+        Holding testHolding = testP.getHolding(ticker);
+        testP.removeFromPortfolio(testHolding);
+        assertNull(testP.getHolding(ticker));
+    }
+
+    @Test
+    public void testIsQuantitySufficient(){
+        String ticker = "AAA";
+        int price = 3;
+        int quantity = 5;
+
+        // Test empty
+        assertFalse(testP.isQuantitySufficient("dummy", 1));
+
+        // True case
+        testP.addStock(ticker, quantity, price);
+        assertTrue(testP.isQuantitySufficient(ticker, quantity -3));
+        assertTrue(testP.isQuantitySufficient(ticker, quantity -1));
+        assertTrue(testP.isQuantitySufficient(ticker, quantity));
+
+        // False case
+        assertFalse(testP.isQuantitySufficient(ticker, quantity+1));
+        assertFalse(testP.isQuantitySufficient(ticker, quantity+3));
+
+    }
 }
 

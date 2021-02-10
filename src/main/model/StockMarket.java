@@ -3,11 +3,11 @@ package model;
 import java.util.ArrayList;
 
 public class StockMarket {
-    ArrayList<Stock> allStocks;
+    private ArrayList<Stock> allStocks = new ArrayList<>();
 
-    // EFFECTS: StockMarket constructor, loads available stocks.
-    public StockMarket() {
-        allStocks = new ArrayList<>();
+    // EFFECTS: return the stock market ArrayList
+    public ArrayList<Stock> getMarket() {
+        return allStocks;
     }
 
     // EFFECTS: return true if stock market is empty
@@ -26,17 +26,6 @@ public class StockMarket {
         allStocks.add(stock);
     }
 
-    // EFFECTS: print out stock information
-    public void displayStocks() {
-        System.out.println("\nDisplaying list of stocks:");
-        for (Stock s : allStocks) {
-            System.out.printf("\t%-15s \t%-25s \t%-10s \t%-10s\n",
-                    "Ticker: " + s.getTicker(),
-                    "Name: " + s.getName(),
-                    "Bid: " + s.getBid(),
-                    "Ask: " + s.getAsk());
-        }
-    }
 
     // EFFECTS: returns the stock if the ticker is found in stockMarket, otherwise return null
     public Stock getStock(String ticker) {
@@ -49,7 +38,7 @@ public class StockMarket {
     }
 
     // MODIFIES: Stock
-    // EFFECTS: update all stock prices from new day
+    // EFFECTS: update all stock prices to new day
     public void updateAllPrices() {
         for (Stock s : allStocks) {
             s.calcNewDaily();

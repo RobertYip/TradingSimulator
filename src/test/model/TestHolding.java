@@ -12,27 +12,27 @@ public class TestHolding {
     private Holding testH;
 
     @BeforeEach
-    void setup() {
+    public void setup() {
         testH = new Holding(TEST_TICKER, TEST_QUANTITY, TEST_PRICE);
     }
 
     @Test
-    void testGetStockTicker() {
+    public void testGetStockTicker() {
         assertEquals(TEST_TICKER, testH.getStockTicker());
     }
 
     @Test
-    void testGetQuantity() {
+    public void testGetQuantity() {
         assertEquals(TEST_QUANTITY, testH.getQuantity());
     }
 
     @Test
-    void testGetBuyPrice() {
+    public void testGetBuyPrice() {
         assertEquals(TEST_PRICE, testH.getBuyPrice());
     }
 
     @Test
-    void testAddQuantity() {
+    public void testAddQuantity() {
         int currentQuantity = TEST_QUANTITY;
 
         testH.addQuantity(1);
@@ -49,7 +49,7 @@ public class TestHolding {
     }
 
     @Test
-    void testRemoveQuantity() {
+    public void testRemoveQuantity() {
         int currentQuantity = TEST_QUANTITY;
 
         testH.removeQuantity(1);
@@ -71,14 +71,14 @@ public class TestHolding {
     }
 
     @Test
-    void testIsQuantitySufficient() {
+    public void testIsQuantitySufficient() {
         assertTrue(testH.isQuantitySufficient(TEST_QUANTITY));
         assertTrue(testH.isQuantitySufficient(TEST_QUANTITY - 1));
         assertFalse(testH.isQuantitySufficient(TEST_QUANTITY + 1));
     }
 
     @Test
-    void testUpdateHolding() {
+    public void testUpdateHolding() {
         int currentPrice = TEST_PRICE;
         int currentQuantity = TEST_QUANTITY;
         int testBookValue;

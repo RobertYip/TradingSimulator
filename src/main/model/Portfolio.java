@@ -19,27 +19,9 @@ public class Portfolio {
         return cash;
     }
 
-    // EFFECTS: prints portfolio: Cash and holdings
-    public void displayPortfolio(StockMarket market) {
-        int stockAtMarketPrice;
-        int totalPortfolioValue;
-        int totalHoldingsValue = 0;
-
-        System.out.println("\nDisplaying portfolio:");
-        System.out.println("\tCash: " + cash);
-
-        for (Holding h : holdings) {
-            stockAtMarketPrice = market.getStock(h.getStockTicker()).getBid();
-            System.out.printf("\t%-15s \t%-20s \t%-20s \t%-25s\n",
-                    "Stock: " + h.getStockTicker(),
-                    "Quantity: " + h.getQuantity(),
-                    "Buy Price: " + h.getBuyPrice(),
-                    "Market Price: " + stockAtMarketPrice);
-            totalHoldingsValue += stockAtMarketPrice * h.getQuantity();
-        }
-
-        totalPortfolioValue = cash + totalHoldingsValue;
-        System.out.println("Total Portfolio value: " + totalPortfolioValue);
+    // EFFECTS: return holdings object
+    public ArrayList<Holding> getHoldings() {
+        return holdings;
     }
 
 
@@ -88,10 +70,12 @@ public class Portfolio {
         return null;
     }
 
-    // REQUIRES: quantity > 0, price > 0
+    // REQUIRES: quantity > 0 && quantity <= holdings quantity
+    //           price > 0
+    //           holding exist in holdings
     // MODIFIES: this
-    // EFFECTS: return false if stock not in stocks portfolio.
-    //          return true if cash is in portfolio and update quantities and cash
+    // EFFECTS: remove quantity of holding from portfolio and update cash.
+    //          if quantity of holdings = 0, remove it from holdings
     public void sellStock(String ticker, int quantity, int price) {
         Holding selectedHolding = getHolding(ticker);
 
@@ -103,6 +87,7 @@ public class Portfolio {
         }
     }
 
+    // REQUIRES: holding exists in portfolio
     // MODIFIES: this
     // EFFECTS: removes holding from holdings
     public void removeFromPortfolio(Holding holding) {
@@ -120,7 +105,6 @@ public class Portfolio {
         if (holding != null) {
             return holding.isQuantitySufficient(quantity);
         }
-        System.out.println("Stock is not in portfolio");
         return false;
     }
 }

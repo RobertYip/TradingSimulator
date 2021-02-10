@@ -3,6 +3,8 @@ package model;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class TestStockMarket {
@@ -21,12 +23,23 @@ public class TestStockMarket {
     Stock testS2 = new Stock(S2_TICKER, S2_NAME, S2_PRICE, S2_GROWTH);
 
     @BeforeEach
-    void setup() {
+    public void setup() {
         testSM = new StockMarket();
     }
 
     @Test
-    void testIsEmpty() {
+    public void testGetMarket() {
+        // Show get market returns the ArrayList<stock>
+        ArrayList<Stock> testMarket = testSM.getMarket();
+        assertTrue(testMarket.isEmpty());
+
+        testSM.addStock(testS1);
+        assertFalse(testMarket.isEmpty());
+        assertEquals(1, testMarket.size());
+    }
+
+    @Test
+    public void testIsEmpty() {
         assertTrue(testSM.isEmpty());
 
         testSM.addStock(testS1);
@@ -37,7 +50,7 @@ public class TestStockMarket {
     }
 
     @Test
-    void testSize() {
+    public void testSize() {
         assertEquals(0, testSM.size());
 
         testSM.addStock(testS1);
@@ -48,7 +61,7 @@ public class TestStockMarket {
     }
 
     @Test
-    void testAddStock() {
+    public void testAddStock() {
         assertNull(testSM.getStock(S1_TICKER));
 
         testSM.addStock(testS1);
@@ -63,8 +76,31 @@ public class TestStockMarket {
     }
 
     @Test
-    void testupdateAllPrices() {
+    public void testGetStock() {
+        assertNull(testSM.getStock(S1_TICKER));
+        assertNull(testSM.getStock(S2_TICKER));
 
+        testSM.addStock(testS1);
+        testSM.addStock(testS2);
+        assertEquals(testS1, testSM.getStock(S1_TICKER));
+        assertEquals(testS2, testSM.getStock(S2_TICKER));
+    }
+
+    @Test
+    public void testUpdateAllPrices() {
+        testSM.addStock(testS1);
+        testSM.addStock(testS2);
+
+        int priceBid1 = testS1.getBid();
+        int priceAsk1 = testS1.getAsk();
+        int priceBid2 = testS1.getBid();
+        int priceAsk2 = testS1.getAsk();
+
+        testSM.updateAllPrices();
+        assertNotEquals(testS1.getBid(), priceBid1);
+        assertNotEquals(testS1.getAsk(), priceAsk1);
+        assertNotEquals(testS1.getBid(), priceBid2);
+        assertNotEquals(testS1.getAsk(), priceAsk2);
     }
 
 

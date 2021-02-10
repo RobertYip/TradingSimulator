@@ -1,5 +1,6 @@
 package ui;
 
+import model.Holding;
 import model.Portfolio;
 import model.Stock;
 import model.StockMarket;
@@ -58,13 +59,15 @@ public class TradingApp {
 
     // EFFECTS: load stocks into allStocks
     public void initStockMarket() {
-        Stock apl = new Stock("APL", "Aple Inc.", 10, 1.2);
-        Stock gms = new Stock("GMS", "GameShop", 30, 1.3);
-        Stock dmc = new Stock("DMC", "DMC Inc.", 3, 1.5);
+        Stock apl = new Stock("APL", "Aple Inc.", 13, 1.1);
+        Stock gms = new Stock("GMS", "GameShop", 30, 1.2);
+        Stock dmc = new Stock("DMC", "DMC Inc.", 12, 1.1);
+        Stock cmp = new Stock("CMP", "Computer Shop", 20, 1.3);
 
         stockMarket.addStock(apl);
         stockMarket.addStock(gms);
         stockMarket.addStock(dmc);
+        stockMarket.addStock(cmp);
     }
 
     // EFFECTS: display user commands
@@ -81,18 +84,25 @@ public class TradingApp {
     // MODIFIES: this
     // EFFECTS: processes user command
     private void processCommand(String command) {
-        if (command.equals("L")) {
-            stockMarket.displayStocks();
-        } else if (command.equals("C")) {
-            portfolio.displayPortfolio(stockMarket);
-        } else if (command.equals("B")) {
-            buyStock();
-        } else if (command.equals("S")) {
-            sellTicker();
-        } else if (command.equals("N")) {
-            nextDay();
-        } else {
-            System.out.println("Selection not valid.");
+        switch (command) {
+            case "L":
+                displayStocks();
+                break;
+            case "C":
+                displayPortfolio();
+                break;
+            case "B":
+                buyStock();
+                break;
+            case "S":
+                sellTicker();
+                break;
+            case "N":
+                nextDay();
+                break;
+            default:
+                System.out.println("Selection not valid.");
+                break;
         }
     }
 
@@ -120,7 +130,7 @@ public class TradingApp {
 
     // EFFECTS: display a message when buying stocks
     private void buyMessage() {
-        stockMarket.displayStocks();
+        displayStocks();
         System.out.println("Cash on hand: " + portfolio.getCash());
         System.out.println("\nWhich stock do you want to buy? Enter ticker. Type 'Q' to go back.");
     }
@@ -131,7 +141,7 @@ public class TradingApp {
         int quantityToBuy;
         int stockPrice;
 
-        quantityToBuy = validateInputIsInteger();
+        quantityToBuy = isPositiveInteger();
         stockPrice = stockMarket.getStock(ticker).getAsk();
 
         if (portfolio.addStock(ticker, quantityToBuy, stockPrice)) {
@@ -144,7 +154,7 @@ public class TradingApp {
     }
 
     // EFFECTS: returns a valid quantity from user. Quantity is a positive integer.
-    private int validateInputIsInteger() {
+    private int isPositiveInteger() {
         int quantity;
         System.out.println("Enter Quantity:");
         while (input.hasNext()) {
@@ -183,7 +193,7 @@ public class TradingApp {
 
     // EFFECTS: display a message when selling stocks
     private void sellMessage() {
-        portfolio.displayPortfolio(stockMarket);
+        displayPortfolio();
         System.out.println("\nWhich stock do you want to sell? Enter ticker. Type 'Q' to go back.");
     }
 
@@ -194,7 +204,8 @@ public class TradingApp {
         int marketPrice;
         marketPrice = stockMarket.getStock(ticker).getAsk();
 
-        quantityToSell = validateInputIsInteger();
+        // Verify quantity is positive integer
+        quantityToSell = isPositiveInteger();
 
         if (portfolio.isQuantitySufficient(ticker, quantityToSell)) {
             portfolio.sellStock(ticker, quantityToSell, marketPrice);
@@ -211,5 +222,41 @@ public class TradingApp {
         days += 1;
         stockMarket.updateAllPrices();
     }
+
+    // EFFECTS: print out stock information
+    public void displayStocks() {
+        System.out.println("\nDisplaying list of stocks:");
+        for (Stock s : stockMarket.getMarket()) {
+            System.out.printf("\t%-15s \t%-25s \t%-10s \t%-10s\n",
+                    "Ticker: " + s.getTicker(),
+                    "Name: " + s.getName(),
+                    "Bid: " + s.getBid(),
+                    "Ask: " + s.getAsk());
+        }
+    }
+
+    // EFFECTS: prints portfolio: Cash and holdings
+    public void displayPortfolio() {
+        int stockAtMarketPrice;
+        int totalPortfolioValue;
+        int totalHoldingsValue = 0;
+        int cash = portfolio.getCash();
+
+        System.out.println("\nDisplaying portfolio:");
+        System.out.println("\tCash: " + cash);
+
+        for (Holding h : portfolio.getHoldings()) {
+            stockAtMarketPrice = stockMarket.getStock(h.getStockTicker()).getBid();
+            System.out.printf("\t%-15s \t%-20s \t%-20s \t%-25s\n",
+                    "Stock: " + h.getStockTicker(),
+                    "Quantity: " + h.getQuantity(),
+                    "Buy Price: " + h.getBuyPrice(),
+                    "Market Price: " + stockAtMarketPrice);
+            totalHoldingsValue += stockAtMarketPrice * h.getQuantity();
+        }
+        totalPortfolioValue = cash + totalHoldingsValue;
+        System.out.println("Total Portfolio value: " + totalPortfolioValue);
+    }
+
 }
 
