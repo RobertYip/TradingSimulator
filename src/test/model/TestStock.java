@@ -18,19 +18,19 @@ public class TestStock {
     }
 
     @Test
-    public void testGetters() {
+    public void testConstructor() {
         assertEquals(TEST_TICKER, testStock.getTicker());
         assertEquals(TEST_NAME, testStock.getName());
         assertEquals(TEST_PRICE, testStock.getBid());
-        //assertEquals(TEST_TICKER,testStock.getAsk());
         assertEquals(TEST_GROWTH, testStock.getGrowth());
     }
 
     @Test
-    public void testConstructor() {
+    public void testGetters() {
         assertEquals(TEST_TICKER, testStock.getTicker());
         assertEquals(TEST_NAME, testStock.getName());
-        //assertEquals(TEST_PRICE, testStock.getBid()); calc new daily added random
+        assertEquals(TEST_PRICE, testStock.getBid());
+        assertEquals(TEST_PRICE+testStock.getRandomNumber(),testStock.getAsk());
         assertEquals(TEST_GROWTH, testStock.getGrowth());
     }
 
@@ -47,7 +47,7 @@ public class TestStock {
     @Test
     public void testCalcRandomNumber() {
         int minRange = 0;
-        int maxRange = 10;
+        int maxRange = 10;  //Based on SPREAD
         int testNumber;
         // Test random number is between 0 to 10 through loop
         for (int i = 0; i < 100; i++){

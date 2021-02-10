@@ -26,7 +26,6 @@ public class StockMarket {
         allStocks.add(stock);
     }
 
-
     // EFFECTS: returns the stock if the ticker is found in stockMarket, otherwise return null
     public Stock getStock(String ticker) {
         for (Stock s : allStocks) {

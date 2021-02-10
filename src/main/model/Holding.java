@@ -30,14 +30,14 @@ public class Holding {
 
     // REQUIRES: quantity > 0
     // MODIFIES: this
-    // EFFECTS: adds quantity to this.quantity
+    // EFFECTS: adds quantity to this
     public void addQuantity(int quantity) {
         this.quantity += quantity;
     }
 
     // REQUIRES: quantity > 0
     // MODIFIES: this
-    // EFFECTS: remove quantity from this.quantity if sufficient quantity
+    // EFFECTS: remove quantity from this if sufficient quantity
     public void removeQuantity(int quantity) {
         if (isQuantitySufficient(quantity)) {
             this.quantity -= quantity;

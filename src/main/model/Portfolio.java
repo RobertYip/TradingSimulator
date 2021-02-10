@@ -61,6 +61,7 @@ public class Portfolio {
     }
 
     // EFFECTS: returns the holding if the ticker is found in holdings
+    //          return null if not found
     public Holding getHolding(String ticker) {
         for (Holding h : holdings) {
             if (h.getStockTicker().equals(ticker)) {
@@ -91,7 +92,6 @@ public class Portfolio {
     // MODIFIES: this
     // EFFECTS: removes holding from holdings
     public void removeFromPortfolio(Holding holding) {
-        //int index = holdings.indexOf(holding);
         holdings.remove(holding);
     }
 

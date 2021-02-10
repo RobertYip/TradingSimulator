@@ -57,6 +57,7 @@ public class TradingApp {
         initStockMarket();
     }
 
+    // MODIFIES: StockMarket
     // EFFECTS: load stocks into allStocks
     public void initStockMarket() {
         Stock apl = new Stock("APL", "Aple Inc.", 13, 1.1);
@@ -81,7 +82,6 @@ public class TradingApp {
         System.out.println("\tQ -> Quit game");
     }
 
-    // MODIFIES: this
     // EFFECTS: processes user command
     private void processCommand(String command) {
         switch (command) {

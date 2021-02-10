@@ -99,8 +99,8 @@ public class TestStockMarket {
         testSM.updateAllPrices();
         assertNotEquals(testS1.getBid(), priceBid1);
         assertNotEquals(testS1.getAsk(), priceAsk1);
-        assertNotEquals(testS1.getBid(), priceBid2);
-        assertNotEquals(testS1.getAsk(), priceAsk2);
+        assertNotEquals(testS2.getBid(), priceBid2);
+        assertNotEquals(testS2.getAsk(), priceAsk2);
     }
 
 
