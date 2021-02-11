@@ -200,7 +200,6 @@ public class TestPortfolio {
         // False case
         assertFalse(testP.isQuantitySufficient(ticker, quantity+1));
         assertFalse(testP.isQuantitySufficient(ticker, quantity+3));
-
     }
 }
 

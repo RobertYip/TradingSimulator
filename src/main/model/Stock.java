@@ -17,7 +17,7 @@ public class Stock {
         this.bidPrice = initialPrice;
         this.growth = growth;
         calcRandom();
-        calcSpread();
+        calcAskPrice();
     }
 
     // EFFECTS: returns ticker
@@ -55,7 +55,7 @@ public class Stock {
     public void calcNewDaily() {
         applyGrowth();
         calcRandom();
-        calcSpread();
+        calcAskPrice();
     }
 
     // MODIFIES: this
@@ -65,15 +65,15 @@ public class Stock {
     }
 
     // MODIFIES: this
-    // EFFECTS: Calculates a random number to be used for the spread, min value = 1
+    // EFFECTS: Calculates a random number (between 1 and SPREAD)
     public void calcRandom() {
         int generatedNumber = (int) (Math.random() * SPREAD);
         this.randomNumber = Math.max(generatedNumber,1);
     }
 
     // MODIFIES: this
-    // EFFECTS: Calculates the random bid-ask spread
-    public void calcSpread() {
+    // EFFECTS: Calculates ask price based on spread
+    public void calcAskPrice() {
         this.askPrice = this.bidPrice + this.randomNumber;
     }
 

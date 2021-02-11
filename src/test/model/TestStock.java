@@ -56,9 +56,5 @@ public class TestStock {
         }
     }
 
-    @Test
-    public void testCalcSpread() {
-
-    }
 }
 
