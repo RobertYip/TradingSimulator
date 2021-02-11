@@ -46,7 +46,7 @@ public class TestStock {
 
     @Test
     public void testCalcRandomNumber() {
-        int minRange = 0;
+        int minRange = 1;
         int maxRange = 10;  //Based on SPREAD
         int testNumber;
         // Test random number is between 0 to 10 through loop

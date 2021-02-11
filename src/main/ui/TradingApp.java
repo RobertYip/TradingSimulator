@@ -153,20 +153,22 @@ public class TradingApp {
         return false;
     }
 
-    // EFFECTS: returns a valid quantity from user. Quantity is a positive integer.
+    // EFFECTS: returns a positive integer from user
     private int isPositiveInteger() {
         int quantity;
-        System.out.println("Enter Quantity:");
-        while (input.hasNext()) {
-            if (input.hasNextInt()) {
-                quantity = input.nextInt();
-                if (quantity > 0) {
-                    return quantity;
-                }
+        System.out.print("Enter Quantity: ");
+        do {
+            while (!input.hasNextInt()) {
+                String userInput = input.next();
+                System.out.printf("Please enter a positive integer:\n", userInput);
             }
-            System.out.println("Invalid quantity, enter a positive integer.");
-        }
-        return -1;
+            quantity = input.nextInt();
+            if (quantity < 0) {
+                System.out.println("Please enter a positive integer:");
+            }
+        } while (quantity < 0);
+
+        return quantity;
     }
 
     // MODIFIES: Portfolio

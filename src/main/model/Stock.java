@@ -65,9 +65,10 @@ public class Stock {
     }
 
     // MODIFIES: this
-    // EFFECTS: Calculates a random number to be used for the spread
+    // EFFECTS: Calculates a random number to be used for the spread, min value = 1
     public void calcRandom() {
-        this.randomNumber = (int) (Math.random() * SPREAD);
+        int generatedNumber = (int) (Math.random() * SPREAD);
+        this.randomNumber = Math.max(generatedNumber,1);
     }
 
     // MODIFIES: this
