@@ -2,7 +2,7 @@
 
 ## Play as a stock trader and earn money!
 
-As a student stock trader, you begin the game with $100. Your goal is to reach **$1,000** in the shortest time possible.  
+As a student stock trader, you begin the game with $100. Your goal is to reach **$1,000** in cash in the shortest time possible.  
 
 
 ## User Stories
