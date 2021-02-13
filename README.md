@@ -5,16 +5,16 @@
 As a student stock trader, you begin the game with $100. Your goal is to reach **$1,000** in the shortest time possible.  
 
 
-##User Stories
+## User Stories
 - As a user, I want to be able to see what stocks are available.
 - As a user, I want to buy stock.
 - As a user, I want to sell stock.
 - As a user, I want to see my portfolio and balance.
 - As a user, I want to advance to the next day for new prices.
 
-##Actions
+## Actions
 
-|Command|Hotkey|Description|
+|Action|Command|Description|
 |---|---|---|
 | "list" | L | List the stock prices |
 | "check" | C | Check your portfolio|
