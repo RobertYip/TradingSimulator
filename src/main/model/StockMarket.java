@@ -2,6 +2,7 @@ package model;
 
 import java.util.ArrayList;
 
+// Stock market that holds a list of individual stocks
 public class StockMarket {
     private ArrayList<Stock> allStocks = new ArrayList<>();
 

@@ -16,6 +16,7 @@ public class TradingApp {
     private Scanner input;
     private int days = 1;
 
+
     // EFFECTS: runs trading simulator
     public TradingApp() {
         runSimulator();
@@ -160,7 +161,7 @@ public class TradingApp {
         do {
             while (!input.hasNextInt()) {
                 String userInput = input.next();
-                System.out.printf("Please enter a positive integer:\n", userInput);
+                System.out.print("Please enter a positive integer:\n" + userInput);
             }
             quantity = input.nextInt();
             if (quantity < 0) {

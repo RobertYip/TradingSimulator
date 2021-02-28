@@ -1,5 +1,6 @@
 package model;
 
+// A single stock in the stock market
 public class Stock {
     private static final int SPREAD = 10;
 

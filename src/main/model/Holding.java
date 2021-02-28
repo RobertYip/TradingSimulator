@@ -1,5 +1,6 @@
 package model;
 
+// A single stock holding in the user's portfolio
 public class Holding {
     private String stockTicker;
     private int quantity;

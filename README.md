@@ -2,7 +2,7 @@
 
 ## Play as a stock trader and earn money!
 
-As a student stock trader, you begin the game with $100. Your goal is to reach **$1,000** in cash in the shortest time possible.  
+As a student stock trader, you begin the game with $100. Your goal is to reach **$1,000** cash in the shortest time possible.  
 
 
 ## User Stories
@@ -11,10 +11,11 @@ As a student stock trader, you begin the game with $100. Your goal is to reach *
 - As a user, I want to sell stock.
 - As a user, I want to see my portfolio and balance.
 - As a user, I want to advance to the next day for new prices.
-
+- As a user, I want to save my portfolio and stock market of a certain day 
+- As a user, I want to reload my portfolio and stock market to a certain day
 ## Actions
 
-|Action|Command|Description|
+|Action|Hotkey|Description|
 |---|---|---|
 | "list" | L | List the stock prices |
 | "check" | C | Check your portfolio|

@@ -2,6 +2,7 @@ package model;
 
 import java.util.ArrayList;
 
+// A user's portfolio that holds a collection of stock holdings
 public class Portfolio {
     private int cash;
     private ArrayList<Holding> holdings;
