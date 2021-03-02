@@ -4,13 +4,21 @@ import model.Holding;
 import model.Portfolio;
 import model.Stock;
 import model.StockMarket;
+import persistence.JsonReader;
+import persistence.JsonWriter;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Scanner;
 
 public class TradingApp {
+    private static final String JSON_STORE_PORTFOLIO = "./data/portfolio.json";
+    private static final String JSON_STORE_STOCKMARKET = "./data/stockmarket.json";
     private static final int INITIAL_CASH = 100;
     private static final int WIN_CONDITION = 1000;
 
+    private JsonWriter jsonWriter;
+    private JsonReader jsonReader;
     private Portfolio portfolio;
     private StockMarket stockMarket;
     private Scanner input;
@@ -19,6 +27,7 @@ public class TradingApp {
 
     // EFFECTS: runs trading simulator
     public TradingApp() {
+        init();
         runSimulator();
     }
 
@@ -28,7 +37,6 @@ public class TradingApp {
         boolean gameRunning = true;
         String command;
 
-        init();
 
         while (gameRunning) {
             if (portfolio.getCash() >= WIN_CONDITION) {
@@ -56,6 +64,8 @@ public class TradingApp {
         stockMarket = new StockMarket();
         input = new Scanner(System.in);
         initStockMarket();
+        jsonWriter = new JsonWriter(JSON_STORE_PORTFOLIO, JSON_STORE_STOCKMARKET);
+        jsonReader = new JsonReader(JSON_STORE_PORTFOLIO, JSON_STORE_STOCKMARKET);
     }
 
     // MODIFIES: StockMarket
@@ -75,20 +85,18 @@ public class TradingApp {
     // EFFECTS: display user commands
     private void displayMenu() {
         System.out.println("\n Today is day " + days + ". Here are your commands:");
-        System.out.println("\tL -> List stocks in stock market");
         System.out.println("\tC -> Check your portfolio");
         System.out.println("\tB -> Buy stocks from stock market");
         System.out.println("\tS -> Sell stocks from portfolio");
         System.out.println("\tN -> Advance to next day for new prices");
+        System.out.println("\tV -> Save game");
+        System.out.println("\tL -> Load game");
         System.out.println("\tQ -> Quit game");
     }
 
     // EFFECTS: processes user command
     private void processCommand(String command) {
         switch (command) {
-            case "L":
-                displayStocks();
-                break;
             case "C":
                 displayPortfolio();
                 break;
@@ -100,6 +108,12 @@ public class TradingApp {
                 break;
             case "N":
                 nextDay();
+                break;
+            case "V":
+                saveGame();
+                break;
+            case "L":
+                loadGame();
                 break;
             default:
                 System.out.println("Selection not valid.");
@@ -259,6 +273,31 @@ public class TradingApp {
         }
         totalPortfolioValue = cash + totalHoldingsValue;
         System.out.println("Total Portfolio value: " + totalPortfolioValue);
+    }
+
+    // EFFECTS: saves stockmarket and portfolio to file
+    public void saveGame() {
+        try {
+            jsonWriter.open();
+            jsonWriter.write(portfolio, stockMarket);
+            jsonWriter.close();
+            System.out.println("Saved game.");
+        } catch (FileNotFoundException e) {
+            System.out.println("Unable to write to file.");
+        }
+    }
+
+    // MODIFIES: this
+    // EFFECTS: loads stockmarket and portfolio from file
+    public void loadGame() {
+        try {
+            portfolio = jsonReader.readPortfolio();
+            System.out.println("Loaded portfolio");
+            stockMarket = jsonReader.readStockMarket();
+            System.out.println("Loaded stock market");
+        } catch (IOException e) {
+            System.out.println("Unable to read from file");
+        }
     }
 
 }

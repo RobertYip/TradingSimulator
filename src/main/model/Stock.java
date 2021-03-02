@@ -1,7 +1,10 @@
 package model;
 
+import org.json.JSONObject;
+import persistence.Writable;
+
 // A single stock in the stock market
-public class Stock {
+public class Stock implements Writable {
     private static final int SPREAD = 10;
 
     private String ticker;
@@ -76,6 +79,19 @@ public class Stock {
     // EFFECTS: Calculates ask price based on spread
     public void calcAskPrice() {
         this.askPrice = this.bidPrice + this.randomNumber;
+    }
+
+    @Override
+    // EFFECTS: create json file for this
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        json.put("ticker", ticker);
+        json.put("name", name);
+        json.put("bidPrice", bidPrice);
+        json.put("askPrice", askPrice);
+        json.put("randomNumber", randomNumber);
+        json.put("growth", growth);
+        return json;
     }
 
 }

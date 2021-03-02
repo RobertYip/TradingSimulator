@@ -1,7 +1,10 @@
 package model;
 
+import org.json.JSONObject;
+import persistence.Writable;
+
 // A single stock holding in the user's portfolio
-public class Holding {
+public class Holding implements Writable {
     private String stockTicker;
     private int quantity;
     private int buyPrice;
@@ -62,4 +65,13 @@ public class Holding {
         this.buyPrice = currentBookValue / this.quantity;
     }
 
+    @Override
+    // EFFECTS: create json file for this
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        json.put("stockTicker", stockTicker);
+        json.put("quantity", quantity);
+        json.put("buyPrice", buyPrice);
+        return json;
+    }
 }

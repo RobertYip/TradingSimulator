@@ -1,9 +1,13 @@
 package model;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+import persistence.Writable;
+
 import java.util.ArrayList;
 
 // A user's portfolio that holds a collection of stock holdings
-public class Portfolio {
+public class Portfolio implements Writable {
     private int cash;
     private ArrayList<Holding> holdings;
 
@@ -107,6 +111,26 @@ public class Portfolio {
             return holding.isQuantitySufficient(quantity);
         }
         return false;
+    }
+
+    @Override
+    // EFFECTS: create json file for this
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        json.put("cash", cash);
+        json.put("holdings", holdingsToJson());
+        return json;
+    }
+
+    // EFFECTS: returns holding in holdings as a JSON array
+    private JSONArray holdingsToJson() {
+        JSONArray jsonArray = new JSONArray();
+
+        for (Holding h : holdings) {
+            jsonArray.put(h.toJson());
+        }
+
+        return jsonArray;
     }
 }
 
