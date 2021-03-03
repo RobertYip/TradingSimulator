@@ -1,5 +1,6 @@
 package model;
 
+import org.json.JSONObject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -109,5 +110,13 @@ public class TestHolding {
 
         testH.updateHolding(addPrice, addQuantity);
         assertEquals(newPrice, testH.getBuyPrice());
+    }
+
+    @Test
+    public void testToJson(){
+        JSONObject testJson = testH.toJson();
+        assertEquals(testJson.getString("stockTicker"),TEST_TICKER);
+        assertEquals(testJson.getInt("quantity"),TEST_QUANTITY);
+        assertEquals(testJson.getInt("buyPrice"),TEST_PRICE);
     }
 }

@@ -1,0 +1,8 @@
+{
+    "holdings": [{
+        "buyPrice": 20,
+        "quantity": 1,
+        "stockTicker": "testP"
+    }],
+    "cash": 30
+}

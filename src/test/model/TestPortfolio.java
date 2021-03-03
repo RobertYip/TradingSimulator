@@ -1,5 +1,7 @@
 package model;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -200,6 +202,42 @@ public class TestPortfolio {
         // False case
         assertFalse(testP.isQuantitySufficient(ticker, quantity+1));
         assertFalse(testP.isQuantitySufficient(ticker, quantity+3));
+    }
+
+    @Test
+    public void testSetCash() {
+        testP.setCash(999);
+        assertEquals(testP.getCash(), 999);
+    }
+
+    @Test
+    public void testToJson(){
+        String ticker = "AAA";
+        int price = 3;
+        int quantity = 5;
+        testP.addStock(ticker, quantity, price);
+        JSONObject testJson = testP.toJson();
+        assertEquals(testJson.getInt("cash"),CASH-price*quantity);
+
+        JSONObject testJsonElement = testJson.getJSONArray("holdings").getJSONObject(0);
+        assertEquals(testJsonElement.getString("stockTicker"),ticker);
+        assertEquals(testJsonElement.getInt("quantity"),quantity);
+        assertEquals(testJsonElement.getInt("buyPrice"),price);
+    }
+
+    @Test
+    public void testHoldingsToJson(){
+        String ticker = "AAA";
+        int price = 3;
+        int quantity = 5;
+        testP.addStock(ticker, quantity, price);
+
+        JSONArray testJson = testP.holdingsToJson();
+        assertFalse(testJson.isEmpty());
+        JSONObject testJsonElement = testJson.getJSONObject(0);
+        assertEquals(testJsonElement.getString("stockTicker"),ticker);
+        assertEquals(testJsonElement.getInt("quantity"),quantity);
+        assertEquals(testJsonElement.getInt("buyPrice"),price);
     }
 }
 

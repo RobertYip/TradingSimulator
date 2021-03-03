@@ -14,6 +14,7 @@ import java.util.Scanner;
 public class TradingApp {
     private static final String JSON_STORE_PORTFOLIO = "./data/portfolio.json";
     private static final String JSON_STORE_STOCKMARKET = "./data/stockmarket.json";
+    private static final String JSON_STORE_DAYS = "./data/days.json";
     private static final int INITIAL_CASH = 100;
     private static final int WIN_CONDITION = 1000;
 
@@ -64,8 +65,8 @@ public class TradingApp {
         stockMarket = new StockMarket();
         input = new Scanner(System.in);
         initStockMarket();
-        jsonWriter = new JsonWriter(JSON_STORE_PORTFOLIO, JSON_STORE_STOCKMARKET);
-        jsonReader = new JsonReader(JSON_STORE_PORTFOLIO, JSON_STORE_STOCKMARKET);
+        jsonWriter = new JsonWriter(JSON_STORE_PORTFOLIO, JSON_STORE_STOCKMARKET,JSON_STORE_DAYS);
+        jsonReader = new JsonReader(JSON_STORE_PORTFOLIO, JSON_STORE_STOCKMARKET,JSON_STORE_DAYS);
     }
 
     // MODIFIES: StockMarket
@@ -279,7 +280,7 @@ public class TradingApp {
     public void saveGame() {
         try {
             jsonWriter.open();
-            jsonWriter.write(portfolio, stockMarket);
+            jsonWriter.write(portfolio, stockMarket, days);
             jsonWriter.close();
             System.out.println("Saved game.");
         } catch (FileNotFoundException e) {
@@ -295,6 +296,7 @@ public class TradingApp {
             System.out.println("Loaded portfolio");
             stockMarket = jsonReader.readStockMarket();
             System.out.println("Loaded stock market");
+            days = jsonReader.readDays();
         } catch (IOException e) {
             System.out.println("Unable to read from file");
         }

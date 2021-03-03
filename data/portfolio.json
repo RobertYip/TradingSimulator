@@ -1,0 +1,15 @@
+{
+    "holdings": [
+        {
+            "buyPrice": 15,
+            "quantity": 1,
+            "stockTicker": "APL"
+        },
+        {
+            "buyPrice": 23,
+            "quantity": 1,
+            "stockTicker": "DMC"
+        }
+    ],
+    "cash": 62
+}

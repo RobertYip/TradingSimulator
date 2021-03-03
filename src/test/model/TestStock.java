@@ -1,5 +1,6 @@
 package model;
 
+import org.json.JSONObject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -54,6 +55,15 @@ public class TestStock {
             testNumber = testStock.getRandomNumber();
             assertTrue(minRange <= testNumber && testNumber <= maxRange);
         }
+    }
+
+    @Test
+    public void testToJson(){
+        JSONObject testJson = testStock.toJson();
+        assertEquals(testJson.getString("ticker"),TEST_TICKER);
+        assertEquals(testJson.getString("name"),TEST_NAME);
+        assertEquals(testJson.getInt("bidPrice"),TEST_PRICE);
+        assertEquals(testJson.getDouble("growth"),TEST_GROWTH);
     }
 
 }

@@ -38,6 +38,12 @@ public class Portfolio implements Writable {
         return cash >= cost;
     }
 
+    // MODIFIES: this
+    // EFFECTS: sets cash to parameter
+    public void setCash(int cash) {
+        this.cash = cash;
+    }
+
     // REQUIRES: cost > 0, isCashSufficient is true
     // MODIFIES: this
     // EFFECTS: reduces cash by cost amount
@@ -123,7 +129,7 @@ public class Portfolio implements Writable {
     }
 
     // EFFECTS: returns holding in holdings as a JSON array
-    private JSONArray holdingsToJson() {
+    public JSONArray holdingsToJson() {
         JSONArray jsonArray = new JSONArray();
 
         for (Holding h : holdings) {

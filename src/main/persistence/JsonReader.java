@@ -16,12 +16,14 @@ import org.json.*;
 // Represents a reader that reads portfolio and stock market from JSON data stored in file
 public class JsonReader {
     private String portfolioSource;
-    private String stockmarketSource;
+    private String stockMarketSource;
+    private String daysSource;
 
     // EFFECTS: constructs reader to read from source file
-    public JsonReader(String portfolio, String stockMarket) {
+    public JsonReader(String portfolio, String stockMarket, String days) {
         this.portfolioSource = portfolio;
-        this.stockmarketSource = stockMarket;
+        this.stockMarketSource = stockMarket;
+        this.daysSource = days;
     }
 
     // EFFECTS: reads source file as string and returns it
@@ -43,12 +45,13 @@ public class JsonReader {
         return parsePortfolio(jsonObject);
     }
 
-
     // EFFECTS: parses Portfolio from JSON object and returns it
     private Portfolio parsePortfolio(JSONObject jsonObject) {
         int cash = jsonObject.getInt("cash");
+
         Portfolio portfolio = new Portfolio(cash);
         addHoldings(portfolio, jsonObject);
+        portfolio.setCash(cash);
         return portfolio;
     }
 
@@ -74,7 +77,7 @@ public class JsonReader {
     // EFFECTS: reads stock market from file and returns it;
     // throws IOException if an error occurs reading data from file
     public StockMarket readStockMarket() throws IOException {
-        String jsonData = readFile(stockmarketSource);
+        String jsonData = readFile(stockMarketSource);
         JSONObject jsonObject = new JSONObject(jsonData);
         return parseStockMarket(jsonObject);
     }
@@ -106,5 +109,15 @@ public class JsonReader {
         Stock s = new Stock(ticker, name, bidPrice, growth);
         sm.addStock(s);
     }
+
+    // EFFECTS: reads days from file and returns it;
+    // throws IOException if an error occurs reading data from file
+    public int readDays() throws IOException {
+        String jsonData = readFile(daysSource);
+        JSONObject jsonObject = new JSONObject(jsonData);
+
+        return jsonObject.getInt("days");
+    }
+
 
 }

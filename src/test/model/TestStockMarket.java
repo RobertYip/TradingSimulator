@@ -1,5 +1,7 @@
 package model;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -103,5 +105,31 @@ public class TestStockMarket {
         assertNotEquals(testS2.getAsk(), priceAsk2);
     }
 
+    @Test
+    public void testToJson(){
+        // Test with 1 stock
+        testSM.addStock(testS1);
+        JSONObject testJson = testSM.toJson();
+        assertFalse(testJson.getJSONArray("allStocks").isEmpty());
+
+        JSONObject testJsonElement = testJson.getJSONArray("allStocks").getJSONObject(0);
+        assertEquals(testJsonElement.getString("ticker"),S1_TICKER);
+        assertEquals(testJsonElement.getString("name"),S1_NAME);
+        assertEquals(testJsonElement.getInt("bidPrice"),S1_PRICE);
+        assertEquals(testJsonElement.getDouble("growth"),S1_GROWTH);
+    }
+
+    @Test
+    public void testAllStocksToJson(){
+        testSM.addStock(testS1);
+
+        JSONArray testJson = testSM.allStocksToJson();
+        assertFalse(testJson.isEmpty());
+        JSONObject testJsonElement = testJson.getJSONObject(0);
+        assertEquals(testJsonElement.getString("ticker"),S1_TICKER);
+        assertEquals(testJsonElement.getString("name"),S1_NAME);
+        assertEquals(testJsonElement.getInt("bidPrice"),S1_PRICE);
+        assertEquals(testJsonElement.getDouble("growth"),S1_GROWTH);
+    }
 
 }
