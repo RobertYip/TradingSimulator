@@ -276,7 +276,7 @@ public class TradingApp {
         System.out.println("Total Portfolio value: " + totalPortfolioValue);
     }
 
-    // EFFECTS: saves stockmarket and portfolio to file
+    // EFFECTS: saves stock market and portfolio to file
     public void saveGame() {
         try {
             jsonWriter.open();
@@ -289,7 +289,7 @@ public class TradingApp {
     }
 
     // MODIFIES: this
-    // EFFECTS: loads stockmarket and portfolio from file
+    // EFFECTS: loads stock market and portfolio from file
     public void loadGame() {
         try {
             portfolio = jsonReader.readPortfolio();

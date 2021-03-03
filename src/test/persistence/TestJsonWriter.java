@@ -7,11 +7,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class testJsonWriter {
+public class TestJsonWriter {
     private static final String pSource = "./data/testPortfolio.json";
     private static final String smSource = "./data/testStockmarket.json";
     private static final String dSource = "./data/testDays.json";

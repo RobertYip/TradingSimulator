@@ -7,7 +7,7 @@ import org.json.JSONObject;
 
 import java.io.*;
 
-// Represents a writer that writes JSON representation of Portfolio, Stockmarket, and days to file
+// Represents a writer that writes JSON representation of Portfolio, StockMarket, and days to file
 public class JsonWriter {
     private static final int TAB = 4;
     private PrintWriter writerP;

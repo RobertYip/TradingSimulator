@@ -128,7 +128,7 @@ public class Portfolio implements Writable {
         return json;
     }
 
-    // EFFECTS: returns holding in holdings as a JSON array
+    // EFFECTS: returns holdings as a JSON array
     public JSONArray holdingsToJson() {
         JSONArray jsonArray = new JSONArray();
 

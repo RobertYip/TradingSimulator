@@ -57,7 +57,7 @@ public class StockMarket implements Writable {
         return json;
     }
 
-    // EFFECTS: returns stock in stocks as a JSON array
+    // EFFECTS: returns allStocks as a JSON array
     public JSONArray allStocksToJson() {
         JSONArray jsonArray = new JSONArray();
 
