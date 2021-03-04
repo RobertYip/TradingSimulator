@@ -10,10 +10,14 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.stream.Stream;
 
-
 import org.json.*;
 
-// Represents a reader that reads portfolio and stock market from JSON data stored in file
+/*
+ * Represents a reader that reads portfolio and stock market from JSON data stored in file
+ * Citation: code obtained from JsonSerializationDemo
+ * URL: https://github.students.cs.ubc.ca/CPSC210/JsonSerializationDemo.git
+ */
+
 public class JsonReader {
     private String portfolioSource;
     private String stockMarketSource;
