@@ -68,7 +68,4 @@ public class CommandPanel extends JPanel implements ActionListener {
             mainPanel.quitGame();
         }
     }
-
-
-
 }

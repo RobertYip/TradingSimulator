@@ -1,8 +1,8 @@
 {"allStocks": [{
-    "askPrice": 29,
+    "askPrice": 32,
     "ticker": "testSM",
     "name": "test",
-    "randomNumber": 4,
+    "randomNumber": 7,
     "growth": 1,
     "bidPrice": 25
 }]}

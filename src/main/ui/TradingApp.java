@@ -1,20 +1,8 @@
 package ui;
 
-import model.Holding;
-import model.Portfolio;
-import model.Stock;
-import model.StockMarket;
-import persistence.JsonReader;
-import persistence.JsonWriter;
-
 import javax.swing.*;
 
-
 import java.awt.*;
-import java.awt.event.ActionListener;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.Scanner;
 
 public class TradingApp extends JFrame {
     // EFFECTS: runs trading simulator
@@ -42,7 +30,4 @@ public class TradingApp extends JFrame {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         setLocation((screenSize.width - getWidth()) / 2, (screenSize.height - getHeight()) / 2);
     }
-
-
 }
-

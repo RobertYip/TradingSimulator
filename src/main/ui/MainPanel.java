@@ -1,8 +1,6 @@
 package ui;
 
 import exceptions.InsufficientQuantityException;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
 import model.Holding;
 import model.Portfolio;
 import model.Stock;
@@ -25,7 +23,6 @@ import java.util.ArrayList;
 import javax.sound.sampled.*;
 import javax.swing.ImageIcon;
 
-
 // Main panel for trading
 public class MainPanel extends JPanel implements ActionListener {
     private static final int INITIAL_CASH = 100;
@@ -33,11 +30,11 @@ public class MainPanel extends JPanel implements ActionListener {
 
     //MEDIA sources
     // source: https://freesound.org/people/grunz/sounds/109662/
-    private String successSound = "./data/success.wav";
+    private final String successSound = "./data/success.wav";
     // source: https://www.myinstants.com/instant/final-fantasy-victory-fanfare/
-    private String victorySound = "./data/victory.wav";
+    private final String victorySound = "./data/victory.wav";
     // source: https://memestocks.org/
-    private ImageIcon stocksIcon = new ImageIcon("./data/stocks.jpg");
+    private final ImageIcon stocksIcon = new ImageIcon("./data/stocks.jpg");
 
     private static final int WIDTH = 800;
     private static final int HEIGHT = 400;
