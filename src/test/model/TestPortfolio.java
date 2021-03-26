@@ -1,5 +1,6 @@
 package model;
 
+import exceptions.InsufficientQuantityException;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.junit.jupiter.api.BeforeEach;
@@ -154,7 +155,11 @@ public class TestPortfolio {
         // Test sell 1
         testPrice = 1;
         testQuantity = 2;
-        testP.sellStock(ticker, testQuantity, testPrice);
+        try {
+            testP.sellStock(ticker, testQuantity, testPrice);
+        } catch (InsufficientQuantityException e) {
+            fail();
+        }
         cash += testPrice * testQuantity;
         assertEquals(cash, testP.getCash());
         assertEquals(3, testP.getHolding(ticker).getQuantity());
@@ -162,10 +167,41 @@ public class TestPortfolio {
         // Test sell all
         testPrice = 1;
         testQuantity = 3;
-        testP.sellStock(ticker, testQuantity, testPrice);
+        try {
+            testP.sellStock(ticker, testQuantity, testPrice);
+        } catch (InsufficientQuantityException e) {
+            fail();
+        }
         cash += testPrice * testQuantity;
         assertEquals(cash, testP.getCash());
         assertTrue(testP.getHoldings().isEmpty());
+    }
+
+    @Test
+    public void testInsufficientQuantity(){
+        int testPrice;
+        int testQuantity;
+
+        String ticker = "AAA";
+        int initPrice = 3;
+        int initQuantity = 1;
+        int cash = CASH;
+
+        // Setup, add a holding
+        testP.addStock(ticker, initQuantity, initPrice);
+        cash -= initPrice * initQuantity;
+
+        // Test sell 1
+        testPrice = 1;
+        testQuantity = 2;
+        try {
+            testP.sellStock(ticker, testQuantity, testPrice);
+            fail();
+        } catch (InsufficientQuantityException e) {
+            // Expected
+        }
+        assertEquals(cash, testP.getCash());
+        assertEquals(initQuantity, testP.getHolding(ticker).getQuantity());
     }
 
     @Test
@@ -185,7 +221,7 @@ public class TestPortfolio {
     }
 
     @Test
-    public void testIsQuantitySufficient(){
+    public void testIsQuantitySufficient() {
         String ticker = "AAA";
         int price = 3;
         int quantity = 5;
@@ -195,13 +231,13 @@ public class TestPortfolio {
 
         // True case
         testP.addStock(ticker, quantity, price);
-        assertTrue(testP.isQuantitySufficient(ticker, quantity -3));
-        assertTrue(testP.isQuantitySufficient(ticker, quantity -1));
+        assertTrue(testP.isQuantitySufficient(ticker, quantity - 3));
+        assertTrue(testP.isQuantitySufficient(ticker, quantity - 1));
         assertTrue(testP.isQuantitySufficient(ticker, quantity));
 
         // False case
-        assertFalse(testP.isQuantitySufficient(ticker, quantity+1));
-        assertFalse(testP.isQuantitySufficient(ticker, quantity+3));
+        assertFalse(testP.isQuantitySufficient(ticker, quantity + 1));
+        assertFalse(testP.isQuantitySufficient(ticker, quantity + 3));
     }
 
     @Test
@@ -211,22 +247,22 @@ public class TestPortfolio {
     }
 
     @Test
-    public void testToJson(){
+    public void testToJson() {
         String ticker = "AAA";
         int price = 3;
         int quantity = 5;
         testP.addStock(ticker, quantity, price);
         JSONObject testJson = testP.toJson();
-        assertEquals(testJson.getInt("cash"),CASH-price*quantity);
+        assertEquals(testJson.getInt("cash"), CASH - price * quantity);
 
         JSONObject testJsonElement = testJson.getJSONArray("holdings").getJSONObject(0);
-        assertEquals(testJsonElement.getString("stockTicker"),ticker);
-        assertEquals(testJsonElement.getInt("quantity"),quantity);
-        assertEquals(testJsonElement.getInt("buyPrice"),price);
+        assertEquals(testJsonElement.getString("stockTicker"), ticker);
+        assertEquals(testJsonElement.getInt("quantity"), quantity);
+        assertEquals(testJsonElement.getInt("buyPrice"), price);
     }
 
     @Test
-    public void testHoldingsToJson(){
+    public void testHoldingsToJson() {
         String ticker = "AAA";
         int price = 3;
         int quantity = 5;
@@ -235,9 +271,9 @@ public class TestPortfolio {
         JSONArray testJson = testP.holdingsToJson();
         assertFalse(testJson.isEmpty());
         JSONObject testJsonElement = testJson.getJSONObject(0);
-        assertEquals(testJsonElement.getString("stockTicker"),ticker);
-        assertEquals(testJsonElement.getInt("quantity"),quantity);
-        assertEquals(testJsonElement.getInt("buyPrice"),price);
+        assertEquals(testJsonElement.getString("stockTicker"), ticker);
+        assertEquals(testJsonElement.getInt("quantity"), quantity);
+        assertEquals(testJsonElement.getInt("buyPrice"), price);
     }
 }
 

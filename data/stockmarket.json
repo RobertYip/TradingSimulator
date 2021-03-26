@@ -1,34 +1,34 @@
 {"allStocks": [
     {
-        "askPrice": 25,
+        "askPrice": 27,
         "ticker": "APL",
         "name": "Aple Inc.",
-        "randomNumber": 9,
+        "randomNumber": 7,
         "growth": 1.1,
-        "bidPrice": 16
+        "bidPrice": 20
     },
     {
-        "askPrice": 56,
+        "askPrice": 110,
         "ticker": "GMS",
         "name": "GameShop",
-        "randomNumber": 5,
+        "randomNumber": 6,
         "growth": 1.2,
-        "bidPrice": 51
+        "bidPrice": 104
     },
     {
-        "askPrice": 20,
+        "askPrice": 22,
         "ticker": "DMC",
         "name": "DMC Inc.",
-        "randomNumber": 5,
+        "randomNumber": 3,
         "growth": 1.1,
-        "bidPrice": 15
+        "bidPrice": 19
     },
     {
-        "askPrice": 48,
+        "askPrice": 121,
         "ticker": "CMP",
         "name": "Computer Shop",
-        "randomNumber": 6,
+        "randomNumber": 3,
         "growth": 1.3,
-        "bidPrice": 42
+        "bidPrice": 118
     }
 ]}

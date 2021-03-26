@@ -35,7 +35,7 @@ public class JsonReader {
         StringBuilder contentBuilder = new StringBuilder();
 
         try (Stream<String> stream = Files.lines(Paths.get(source), StandardCharsets.UTF_8)) {
-            stream.forEach(s -> contentBuilder.append(s));
+            stream.forEach(contentBuilder::append);
         }
 
         return contentBuilder.toString();
@@ -53,7 +53,7 @@ public class JsonReader {
     private Portfolio parsePortfolio(JSONObject jsonObject) {
         int cash = jsonObject.getInt("cash");
 
-        Portfolio portfolio = new Portfolio(cash);
+        Portfolio portfolio = new Portfolio(10000); //Ensures it can buy portfolio
         addHoldings(portfolio, jsonObject);
         portfolio.setCash(cash);
         return portfolio;

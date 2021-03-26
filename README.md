@@ -14,12 +14,11 @@ As a student stock trader, you begin the game with $100. Your goal is to reach *
 - As a user, I want to load my portfolio and stock market to a certain day
 ## Actions
 
-|Action|Command|Description|
-|---|---|---|
-| "check" | C | Check your portfolio|
-| "buy" | B | Buys the stock at the ask price (eg. "buy GME 100")|
-| "sell" | S | Sell the stock at the bid price|
-| "next" | N | Advance to next day for new prices|
-| "save" | V | Save game|
-| "load" | L | Load game|
-| "quit" | Q | Quit the game|
+|Action|Description|
+|---|---|
+| "check" | Check your portfolio and sell stocks|
+| "buy" | Buys the stock at the ask price (eg. "buy GME 100")|
+| "next" | Advance to next day for new prices|
+| "save" | Save game|
+| "load" | Load game|
+| "quit" | Quit the game|

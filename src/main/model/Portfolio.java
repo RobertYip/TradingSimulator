@@ -1,5 +1,6 @@
 package model;
 
+import exceptions.InsufficientQuantityException;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import persistence.Writable;
@@ -88,9 +89,11 @@ public class Portfolio implements Writable {
     // MODIFIES: this
     // EFFECTS: remove quantity of holding from portfolio and update cash.
     //          if quantity of holdings = 0, remove it from holdings
-    public void sellStock(String ticker, int quantity, int price) {
+    public void sellStock(String ticker, int quantity, int price) throws InsufficientQuantityException {
+        if (!isQuantitySufficient(ticker, quantity)) {
+            throw new InsufficientQuantityException();
+        }
         Holding selectedHolding = getHolding(ticker);
-
         cash += quantity * price;
         selectedHolding.removeQuantity(quantity);
 
