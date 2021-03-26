@@ -32,7 +32,6 @@ public class TradingApp extends JFrame {
         pack();
         centreOnScreen();
         setVisible(true);
-
     }
 
     // Centres frame on desktop

@@ -1,6 +1,8 @@
 package ui;
 
 import exceptions.InsufficientQuantityException;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import model.Holding;
 import model.Portfolio;
 import model.Stock;
@@ -15,19 +17,31 @@ import javax.swing.table.TableColumnModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 
-// Panel for command buttons
+import javax.sound.sampled.*;
+import javax.swing.ImageIcon;
+
+
+// Main panel for trading
 public class MainPanel extends JPanel implements ActionListener {
     private static final int INITIAL_CASH = 100;
     private int days = 1;
 
+    //MEDIA sources
+    // source: https://freesound.org/people/grunz/sounds/109662/
+    private String successSound = "./data/success.wav";
+    // source: https://www.myinstants.com/instant/final-fantasy-victory-fanfare/
+    private String victorySound = "./data/victory.wav";
+    // source: https://memestocks.org/
+    private ImageIcon stocksIcon = new ImageIcon("./data/stocks.jpg");
+
     private static final int WIDTH = 800;
     private static final int HEIGHT = 400;
     private static final int BUTTON_HEIGHT = 40;
-
 
     private DefaultTableModel tableModel;
     private JTable table;
@@ -38,6 +52,7 @@ public class MainPanel extends JPanel implements ActionListener {
     private JLabel dayLabel;
     private JLabel infoLabel;
     private JLabel instructionsLabel;
+
     private JButton actionButton;
     private JSpinner spinner;
 
@@ -75,6 +90,7 @@ public class MainPanel extends JPanel implements ActionListener {
         actionContainer.add(spinner);
         actionContainer.add(actionButton);
         actionContainer.add(infoLabel);
+        actionContainer.add(new JLabel(stocksIcon));
         add(actionContainer);
         actionContainer.setPreferredSize(new Dimension(180, 300));
     }
@@ -105,7 +121,6 @@ public class MainPanel extends JPanel implements ActionListener {
         actionButton = new JButton("");
         actionButton.addActionListener(this);
         setSpinner();
-
     }
 
     // MODIFIES: this
@@ -128,15 +143,16 @@ public class MainPanel extends JPanel implements ActionListener {
     // EFFECTS: Sets info label
     public void setInfoLabel(String infoMsg) {
         infoLabel.setText("<html><p>" + infoMsg + "</p></html>");
-        infoLabel.setPreferredSize(new Dimension(170, 60));
+        infoLabel.setPreferredSize(new Dimension(170, 20));
     }
 
     // MODIFIES: this
     // EFFECTS: Sets instructions label
     public void setInstructionsLabel(String instructionsMsg) {
         instructionsLabel.setText("<html><p>" + instructionsMsg + "</p></html>");
-        instructionsLabel.setPreferredSize(new Dimension(170, 60));
+        instructionsLabel.setPreferredSize(new Dimension(170, 40));
     }
+
 
     // EFFECTS: Sets spinner parameter
     public void setSpinner() {
@@ -280,7 +296,7 @@ public class MainPanel extends JPanel implements ActionListener {
         int quantity = (Integer) spinner.getValue();
 
         if (portfolio.addStock(ticker, quantity, stockPrice)) {
-            messageBox("Bought " + quantity + " " + ticker + " for $" + stockPrice * quantity + ".");
+            messageBox("Bought " + quantity + " " + ticker + " for $" + stockPrice * quantity + ".", successSound);
         } else {
             messageBox("Insufficient cash, try again.");
         }
@@ -301,7 +317,7 @@ public class MainPanel extends JPanel implements ActionListener {
         int quantity = (int) spinner.getValue();
         try {
             portfolio.sellStock(ticker, quantity, stockPrice);
-            messageBox("Sold " + quantity + " " + ticker + " for $" + stockPrice * quantity + ".");
+            messageBox("Sold " + quantity + " " + ticker + " for $" + stockPrice * quantity + ".", successSound);
             setInfoLabel("Cash: " + portfolio.getCash());
         } catch (InsufficientQuantityException e) {
             messageBox("Insufficient quantity to sell.");
@@ -326,7 +342,7 @@ public class MainPanel extends JPanel implements ActionListener {
             jsonWriter.write(portfolio, stockMarket, days);
             jsonWriter.close();
             table.setModel(loadPortfolio());
-            messageBox("Save complete");
+            messageBox("Save complete", successSound);
         } catch (FileNotFoundException e) {
             messageBox("Unable to write to file");
         }
@@ -340,7 +356,7 @@ public class MainPanel extends JPanel implements ActionListener {
             stockMarket = jsonReader.readStockMarket();
             days = jsonReader.readDays();
             checkPortfolioScreen();
-            messageBox("Load complete");
+            messageBox("Load complete", successSound);
         } catch (IOException e) {
             messageBox("Unable to read from file");
         }
@@ -348,7 +364,7 @@ public class MainPanel extends JPanel implements ActionListener {
 
     // EFFECTS: Exit game; stop running application
     public void quitGame() {
-        messageBox("Thanks for playing!");
+        messageBox("Thanks for playing!", victorySound);
         System.exit(1);
     }
 
@@ -358,5 +374,27 @@ public class MainPanel extends JPanel implements ActionListener {
                 msg,
                 "Message",
                 JOptionPane.INFORMATION_MESSAGE);
+    }
+
+    // EFFECTS: Custom message popup to save space and plays a sound
+    public void messageBox(String msg, String soundPath) {
+        sound(soundPath);
+        JOptionPane.showMessageDialog(null,
+                msg,
+                "Message",
+                JOptionPane.INFORMATION_MESSAGE);
+    }
+
+    // EFFECTS: Play sounds at buttons
+    // source: https://stackoverflow.com/questions/42955509/how-to-play-a-simple-audio-file-java
+    // source: https://stackoverflow.com/questions/6045384/playing-mp3-and-wav-in-java
+    public void sound(String soundPath) {
+        try {
+            Clip clip = AudioSystem.getClip();
+            clip.open(AudioSystem.getAudioInputStream(new File(soundPath)));
+            clip.start();
+        } catch (Exception ex) {
+            messageBox("Error loading sound");
+        }
     }
 }
