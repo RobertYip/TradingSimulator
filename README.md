@@ -1,8 +1,18 @@
 # Stock Trading Simulator
 
-## Play as a stock trader and earn money!
+Buy and sell stocks to grow your portfolio!
 
-As a student stock trader, you begin the game with $100. Your goal is to reach **$1,000** cash in the shortest time possible.  
+## Phase 4: Task 2
+The Portfolio class in the model package is robust. The Methods addStock and sellStock throws checked exceptions.
+
+Test methods have been modified to test cases with and without catching exceptions. 
+
+## Phase 4: Task 3
+- I like the way my original models were setup, how Portfolio is associated with a collection of Holdings and
+how StockMarket is associated with a collection of Stocks.
+- Given more time, I would refactor the classes in the ui. Right now, a StockMarket and Portfolio object is instantiated
+in the main panel, but I think this should be instantiated in TradingApp instead and passed into the MainPanel to
+ access.
 
 
 ## User Stories

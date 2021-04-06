@@ -1,5 +1,6 @@
 package persistence;
 
+import exceptions.InvalidInputException;
 import model.Stock;
 import model.StockMarket;
 import model.Portfolio;
@@ -62,6 +63,9 @@ public class TestJsonWriter {
 
         } catch (IOException e) {
             fail("Exception should not have been thrown");
+        } catch (InvalidInputException e) {
+            fail();
         }
+
     }
 }

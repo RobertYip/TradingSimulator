@@ -13,6 +13,7 @@ public class TestJsonReader {
     private static final String smSource = "./data/testStockmarket.json";
     private static final String dSource = "./data/testDays.json";
     private static final String brokenSource = "./data/dne.json";
+    private static final String pSourceException = "./data/testPortfolioException.json";
 
     private String testPortfolioTicker = "testP";
     private int testPortfolioCash = 50;
@@ -32,6 +33,7 @@ public class TestJsonReader {
             // pass
         }
     }
+
     @Test
     public void testReaderNonExistentStockMarket(){
         JsonReader reader = new JsonReader(pSource, brokenSource, dSource);
@@ -42,6 +44,18 @@ public class TestJsonReader {
             // pass
         }
     }
+
+    @Test
+    public void testPortfolioInvalidInputsException(){
+        JsonReader reader = new JsonReader(pSourceException, brokenSource, dSource);
+        try {
+            Portfolio p = reader.readPortfolio();
+            assertEquals(p.getHoldings().size(),0);
+        } catch (IOException e) {
+            fail();
+        }
+    }
+
     @Test
     public void testReaderNonExistentDaysSource(){
         JsonReader reader = new JsonReader(pSource, smSource, brokenSource);

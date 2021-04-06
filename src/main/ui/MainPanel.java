@@ -1,6 +1,7 @@
 package ui;
 
 import exceptions.InsufficientQuantityException;
+import exceptions.InvalidInputException;
 import model.Holding;
 import model.Portfolio;
 import model.Stock;
@@ -27,6 +28,8 @@ import javax.swing.ImageIcon;
 public class MainPanel extends JPanel implements ActionListener {
     private static final int INITIAL_CASH = 100;
     private int days = 1;
+    private StockMarket stockMarket = new StockMarket();
+    private Portfolio portfolio = new Portfolio(INITIAL_CASH);
 
     //MEDIA sources
     // source: https://freesound.org/people/grunz/sounds/109662/
@@ -43,8 +46,6 @@ public class MainPanel extends JPanel implements ActionListener {
     private DefaultTableModel tableModel;
     private JTable table;
     private JScrollPane tableContainer;
-    private StockMarket stockMarket = new StockMarket();
-    private Portfolio portfolio = new Portfolio(INITIAL_CASH);
     private JPanel actionContainer;
     private JLabel dayLabel;
     private JLabel infoLabel;
@@ -291,11 +292,14 @@ public class MainPanel extends JPanel implements ActionListener {
             messageBox("Unable to get quantity, try again");
         }
         int quantity = (Integer) spinner.getValue();
-
-        if (portfolio.addStock(ticker, quantity, stockPrice)) {
-            messageBox("Bought " + quantity + " " + ticker + " for $" + stockPrice * quantity + ".", successSound);
-        } else {
-            messageBox("Insufficient cash, try again.");
+        try {
+            if (portfolio.addStock(ticker, quantity, stockPrice)) {
+                messageBox("Bought " + quantity + " " + ticker + " for $" + stockPrice * quantity + ".", successSound);
+            } else {
+                messageBox("Insufficient cash, try again.");
+            }
+        } catch (InvalidInputException e) {
+            messageBox("Invalid quantity or price input. Please try again.");
         }
         setInfoLabel("Cash: " + portfolio.getCash());
     }
@@ -316,6 +320,8 @@ public class MainPanel extends JPanel implements ActionListener {
             portfolio.sellStock(ticker, quantity, stockPrice);
             messageBox("Sold " + quantity + " " + ticker + " for $" + stockPrice * quantity + ".", successSound);
             setInfoLabel("Cash: " + portfolio.getCash());
+        } catch (InvalidInputException e) {
+            messageBox("Invalid quantity input or price. Please try again.");
         } catch (InsufficientQuantityException e) {
             messageBox("Insufficient quantity to sell.");
         }

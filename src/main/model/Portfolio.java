@@ -1,6 +1,7 @@
 package model;
 
 import exceptions.InsufficientQuantityException;
+import exceptions.InvalidInputException;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import persistence.Writable;
@@ -12,7 +13,6 @@ public class Portfolio implements Writable {
     private int cash;
     private ArrayList<Holding> holdings;
 
-    // REQUIRES: initialCash > 0
     // MODIFIES: this
     // EFFECTS: constructs a portfolio for the player with initialCash and empty holdings
     public Portfolio(int initialCash) {
@@ -30,8 +30,6 @@ public class Portfolio implements Writable {
         return holdings;
     }
 
-
-    // REQUIRES: quantity > 0, price > 0
     // MODIFIES: this
     // EFFECTS: return false if not enough cash on hand.
     //          return true if sufficient cash
@@ -45,17 +43,19 @@ public class Portfolio implements Writable {
         this.cash = cash;
     }
 
-    // REQUIRES: cost > 0, isCashSufficient is true
     // MODIFIES: this
     // EFFECTS: reduces cash by cost amount
     public void deductCash(int cost) {
         cash -= cost;
     }
 
-    // REQUIRES: quantity > 0, price > 0
     // MODIFIES: this
     // EFFECTS: updates holding if exist in holdings, else add new holding to holdings
-    public boolean addStock(String ticker, int quantity, int price) {
+    public boolean addStock(String ticker, int quantity, int price) throws InvalidInputException {
+        if (quantity <= 0 || price <= 0) {
+            throw new InvalidInputException();
+        }
+
         Holding foundHolding = getHolding(ticker);
         int cost = quantity * price;
 
@@ -83,13 +83,15 @@ public class Portfolio implements Writable {
         return null;
     }
 
-    // REQUIRES: quantity > 0 && quantity <= holdings quantity
-    //           price > 0
-    //           holding exist in holdings
     // MODIFIES: this
     // EFFECTS: remove quantity of holding from portfolio and update cash.
     //          if quantity of holdings = 0, remove it from holdings
-    public void sellStock(String ticker, int quantity, int price) throws InsufficientQuantityException {
+    public void sellStock(String ticker, int quantity, int price) throws InvalidInputException,
+            InsufficientQuantityException {
+        if (quantity <= 0 || price <= 0) {
+            throw new InvalidInputException();
+        }
+
         if (!isQuantitySufficient(ticker, quantity)) {
             throw new InsufficientQuantityException();
         }
@@ -102,14 +104,12 @@ public class Portfolio implements Writable {
         }
     }
 
-    // REQUIRES: holding exists in portfolio
     // MODIFIES: this
     // EFFECTS: removes holding from holdings
     public void removeFromPortfolio(Holding holding) {
         holdings.remove(holding);
     }
 
-    // REQUIRES: quantity > 0
     // MODIFIES: this
     // EFFECTS: return true if sufficient quantity in portfolio to sell
     //          return false if stock not in portfolio or not enough quantity in portfolio

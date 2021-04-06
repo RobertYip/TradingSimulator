@@ -1,6 +1,7 @@
 package model;
 
 import exceptions.InsufficientQuantityException;
+import exceptions.InvalidInputException;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.junit.jupiter.api.BeforeEach;
@@ -35,8 +36,11 @@ public class TestPortfolio {
         assertTrue(testP.getHoldings().isEmpty());
         assertEquals(0, testP.getHoldings().size());
         //Add a holding
-        assertTrue(testP.addStock("AAA", 10, 10));
-
+        try {
+            assertTrue(testP.addStock("AAA", 10, 10));
+        } catch (InvalidInputException e) {
+            fail();
+        }
         assertFalse(testP.getHoldings().isEmpty());
         assertEquals(1, testP.getHoldings().size());
     }
@@ -69,8 +73,12 @@ public class TestPortfolio {
 
     @Test
     public void testAddStockInsufficientCash() {
-        assertFalse(testP.addStock("AAA", 10, 100));
-        assertFalse(testP.addStock("AAA", 101, 1));
+        try {
+            assertFalse(testP.addStock("AAA", 10, 100));
+            assertFalse(testP.addStock("AAA", 101, 1));
+        } catch (InvalidInputException e) {
+            fail();
+        }
     }
 
     @Test
@@ -88,9 +96,12 @@ public class TestPortfolio {
         int cost2 = price2 * quantity2;
 
         // Add 2 different stocks
-        assertTrue(testP.addStock(ticker, quantity, price));
-        assertTrue(testP.addStock(ticker2, quantity2, price2));
-
+        try {
+            assertTrue(testP.addStock(ticker, quantity, price));
+            assertTrue(testP.addStock(ticker2, quantity2, price2));
+        } catch (InvalidInputException e) {
+            fail();
+        }
         // Test cash
         currentCash = currentCash - cost - cost2;
         assertEquals(currentCash, testP.getCash());
@@ -110,32 +121,62 @@ public class TestPortfolio {
 
     @Test
     public void testAddStockExisting() {
-        // First buy
+        try {
+            // First buy
+            String ticker = "AAA";
+            int price = 3;
+            int quantity = 5;
+            int cost = price * quantity;
+            int currentCash = CASH;
+
+            testP.addStock(ticker, quantity, price);
+            currentCash -= cost;
+
+            Holding testH = testP.getHolding(ticker);
+
+            //Second buy
+            int price2 = 10;
+            int quantity2 = 5;
+            int cost2 = price2 * quantity2;
+            currentCash -= cost2;
+            int newQuantity = quantity + quantity2;
+            int newPrice = (cost + cost2) / newQuantity;
+
+            testP.addStock(ticker, quantity2, price2);
+            assertEquals(currentCash, testP.getCash());
+            assertNotNull(testH);
+            assertEquals(ticker, testH.getStockTicker());
+            assertEquals(newPrice, testH.getBuyPrice());
+            assertEquals(newQuantity, testH.getQuantity());
+        } catch (InvalidInputException e) {
+            fail();
+        }
+
+    }
+
+    @Test
+    public void testAddStockInvalidInputException() {
         String ticker = "AAA";
-        int price = 3;
+
+        //Invalid Price
+        int price = -3;
         int quantity = 5;
-        int cost = price * quantity;
-        int currentCash = CASH;
+        try{
+            testP.addStock(ticker, quantity, price);
+            fail();
+        } catch (InvalidInputException e) {
+            //Expected
+        }
 
-        testP.addStock(ticker, quantity, price);
-        currentCash -= cost;
-
-        Holding testH = testP.getHolding(ticker);
-
-        //Second buy
-        int price2 = 10;
-        int quantity2 = 5;
-        int cost2 = price2 * quantity2;
-        currentCash -= cost2;
-        int newQuantity = quantity + quantity2;
-        int newPrice = (cost + cost2) / newQuantity;
-
-        testP.addStock(ticker, quantity2, price2);
-        assertEquals(currentCash, testP.getCash());
-        assertNotNull(testH);
-        assertEquals(ticker, testH.getStockTicker());
-        assertEquals(newPrice, testH.getBuyPrice());
-        assertEquals(newQuantity, testH.getQuantity());
+        //Invalid Quantity
+        price = 3;
+        quantity = -5;
+        try{
+            testP.addStock(ticker, quantity, price);
+            fail();
+        } catch (InvalidInputException e) {
+            //Expected
+        }
     }
 
     @Test
@@ -148,17 +189,18 @@ public class TestPortfolio {
         int initQuantity = 5;
         int cash = CASH;
 
-        // Setup, add a holding
-        testP.addStock(ticker, initQuantity, initPrice);
-        cash -= initPrice * initQuantity;
 
         // Test sell 1
         testPrice = 1;
         testQuantity = 2;
         try {
+            testP.addStock(ticker, initQuantity, initPrice);
+            cash -= initPrice * initQuantity;
             testP.sellStock(ticker, testQuantity, testPrice);
+        } catch (InvalidInputException e) {
+            fail("Invalid quantity or price input");
         } catch (InsufficientQuantityException e) {
-            fail();
+            fail("Insufficient holding in portfolio");
         }
         cash += testPrice * testQuantity;
         assertEquals(cash, testP.getCash());
@@ -169,8 +211,10 @@ public class TestPortfolio {
         testQuantity = 3;
         try {
             testP.sellStock(ticker, testQuantity, testPrice);
+        } catch (InvalidInputException e) {
+            fail("Invalid quantity or price input");
         } catch (InsufficientQuantityException e) {
-            fail();
+            fail("Insufficient holding in portfolio");
         }
         cash += testPrice * testQuantity;
         assertEquals(cash, testP.getCash());
@@ -178,7 +222,7 @@ public class TestPortfolio {
     }
 
     @Test
-    public void testInsufficientQuantity(){
+    public void testInsufficientQuantityException() {
         int testPrice;
         int testQuantity;
 
@@ -187,18 +231,72 @@ public class TestPortfolio {
         int initQuantity = 1;
         int cash = CASH;
 
-        // Setup, add a holding
-        testP.addStock(ticker, initQuantity, initPrice);
-        cash -= initPrice * initQuantity;
-
         // Test sell 1
         testPrice = 1;
         testQuantity = 2;
         try {
+            testP.addStock(ticker, initQuantity, initPrice);
+            cash -= initPrice * initQuantity;
             testP.sellStock(ticker, testQuantity, testPrice);
+            fail();
+        } catch (InvalidInputException e) {
             fail();
         } catch (InsufficientQuantityException e) {
             // Expected
+        }
+        assertEquals(cash, testP.getCash());
+        assertEquals(initQuantity, testP.getHolding(ticker).getQuantity());
+    }
+
+    @Test
+    public void testInvalidInputQuantityException() {
+        int testPrice;
+        int testQuantity;
+
+        String ticker = "AAA";
+        int initPrice = 3;
+        int initQuantity = 1;
+        int cash = CASH;
+
+        // Test sell 0
+        testPrice = 1;
+        testQuantity = 0;
+        try {
+            testP.addStock(ticker, initQuantity, initPrice);
+            cash -= initPrice * initQuantity;
+            testP.sellStock(ticker, testQuantity, testPrice);
+            fail();
+        } catch (InvalidInputException e) {
+            // Expected
+        } catch (InsufficientQuantityException e) {
+            fail();
+        }
+        assertEquals(cash, testP.getCash());
+        assertEquals(initQuantity, testP.getHolding(ticker).getQuantity());
+    }
+
+    @Test
+    public void testInvalidInputPriceException() {
+        int testPrice;
+        int testQuantity;
+
+        String ticker = "AAA";
+        int initPrice = 3;
+        int initQuantity = 1;
+        int cash = CASH;
+
+        // Test sell 0
+        testPrice = 0;
+        testQuantity = 1;
+        try {
+            testP.addStock(ticker, initQuantity, initPrice);
+            cash -= initPrice * initQuantity;
+            testP.sellStock(ticker, testQuantity, testPrice);
+            fail();
+        } catch (InvalidInputException e) {
+            // Expected
+        } catch (InsufficientQuantityException e) {
+            fail();
         }
         assertEquals(cash, testP.getCash());
         assertEquals(initQuantity, testP.getHolding(ticker).getQuantity());
@@ -210,14 +308,17 @@ public class TestPortfolio {
         int price = 3;
         int quantity = 5;
 
-        // Setup, add a holding
-        testP.addStock(ticker, quantity, price);
-        assertNotNull(testP.getHolding(ticker));
+        try {
+            testP.addStock(ticker, quantity, price);
+            assertNotNull(testP.getHolding(ticker));
 
-        // Test it is removed
-        Holding testHolding = testP.getHolding(ticker);
-        testP.removeFromPortfolio(testHolding);
-        assertNull(testP.getHolding(ticker));
+            // Test it is removed
+            Holding testHolding = testP.getHolding(ticker);
+            testP.removeFromPortfolio(testHolding);
+            assertNull(testP.getHolding(ticker));
+        } catch (InvalidInputException e) {
+            fail();
+        }
     }
 
     @Test
@@ -225,19 +326,22 @@ public class TestPortfolio {
         String ticker = "AAA";
         int price = 3;
         int quantity = 5;
+        try {
+            // Test empty
+            assertFalse(testP.isQuantitySufficient("dummy", 1));
 
-        // Test empty
-        assertFalse(testP.isQuantitySufficient("dummy", 1));
+            // True case
+            testP.addStock(ticker, quantity, price);
+            assertTrue(testP.isQuantitySufficient(ticker, quantity - 3));
+            assertTrue(testP.isQuantitySufficient(ticker, quantity - 1));
+            assertTrue(testP.isQuantitySufficient(ticker, quantity));
 
-        // True case
-        testP.addStock(ticker, quantity, price);
-        assertTrue(testP.isQuantitySufficient(ticker, quantity - 3));
-        assertTrue(testP.isQuantitySufficient(ticker, quantity - 1));
-        assertTrue(testP.isQuantitySufficient(ticker, quantity));
-
-        // False case
-        assertFalse(testP.isQuantitySufficient(ticker, quantity + 1));
-        assertFalse(testP.isQuantitySufficient(ticker, quantity + 3));
+            // False case
+            assertFalse(testP.isQuantitySufficient(ticker, quantity + 1));
+            assertFalse(testP.isQuantitySufficient(ticker, quantity + 3));
+        } catch (InvalidInputException e) {
+            fail();
+        }
     }
 
     @Test
@@ -251,14 +355,18 @@ public class TestPortfolio {
         String ticker = "AAA";
         int price = 3;
         int quantity = 5;
-        testP.addStock(ticker, quantity, price);
-        JSONObject testJson = testP.toJson();
-        assertEquals(testJson.getInt("cash"), CASH - price * quantity);
+        try {
+            testP.addStock(ticker, quantity, price);
+            JSONObject testJson = testP.toJson();
+            assertEquals(testJson.getInt("cash"), CASH - price * quantity);
 
-        JSONObject testJsonElement = testJson.getJSONArray("holdings").getJSONObject(0);
-        assertEquals(testJsonElement.getString("stockTicker"), ticker);
-        assertEquals(testJsonElement.getInt("quantity"), quantity);
-        assertEquals(testJsonElement.getInt("buyPrice"), price);
+            JSONObject testJsonElement = testJson.getJSONArray("holdings").getJSONObject(0);
+            assertEquals(testJsonElement.getString("stockTicker"), ticker);
+            assertEquals(testJsonElement.getInt("quantity"), quantity);
+            assertEquals(testJsonElement.getInt("buyPrice"), price);
+        } catch (InvalidInputException e) {
+            fail();
+        }
     }
 
     @Test
@@ -266,14 +374,18 @@ public class TestPortfolio {
         String ticker = "AAA";
         int price = 3;
         int quantity = 5;
-        testP.addStock(ticker, quantity, price);
+        try {
+            testP.addStock(ticker, quantity, price);
 
-        JSONArray testJson = testP.holdingsToJson();
-        assertFalse(testJson.isEmpty());
-        JSONObject testJsonElement = testJson.getJSONObject(0);
-        assertEquals(testJsonElement.getString("stockTicker"), ticker);
-        assertEquals(testJsonElement.getInt("quantity"), quantity);
-        assertEquals(testJsonElement.getInt("buyPrice"), price);
+            JSONArray testJson = testP.holdingsToJson();
+            assertFalse(testJson.isEmpty());
+            JSONObject testJsonElement = testJson.getJSONObject(0);
+            assertEquals(testJsonElement.getString("stockTicker"), ticker);
+            assertEquals(testJsonElement.getInt("quantity"), quantity);
+            assertEquals(testJsonElement.getInt("buyPrice"), price);
+        } catch (InvalidInputException e) {
+            fail();
+        }
     }
 }
 

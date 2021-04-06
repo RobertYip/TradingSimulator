@@ -1,5 +1,6 @@
 package persistence;
 
+import exceptions.InvalidInputException;
 import model.Portfolio;
 import model.StockMarket;
 import model.Stock;
@@ -75,7 +76,11 @@ public class JsonReader {
         String stockTicker = jsonObject.getString("stockTicker");
         int quantity = jsonObject.getInt("quantity");
         int price = jsonObject.getInt("buyPrice");
-        p.addStock(stockTicker, quantity, price);
+        try {
+            p.addStock(stockTicker, quantity, price);
+        } catch (InvalidInputException e) {
+            System.out.println("Load error: Inputs invalid");
+        }
     }
 
     // EFFECTS: reads stock market from file and returns it;
