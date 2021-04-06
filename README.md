@@ -9,10 +9,17 @@ Test methods have been modified to test cases with and without catching exceptio
 
 ## Phase 4: Task 3
 - I like the way my original models were setup, how Portfolio is associated with a collection of Holdings and
-how StockMarket is associated with a collection of Stocks.
-- Given more time, I would refactor the classes in the ui. Right now, a StockMarket and Portfolio object is instantiated
-in the main panel, but I think this should be instantiated in TradingApp instead and passed into the MainPanel to
- access.
+how StockMarket is associated with a collection of Stocks. Cohesion is high as each class has a single, focused purpose.
+Coupling is low as changes in a class does not affect the other classes much. 
+- Given more time, I would refactor the ui classes. Right now, a StockMarket and Portfolio object is instantiated
+in the main panel, but it would make more sense to instantiate them in the TradingApp instead of the MainPanel. 
+- From a cohesion standpoint, I would expect to find the Portfolio and StockMarket models to be objects of the main 
+ TradingApp, rather than objects from a ui panel. 
+- *Example: The model's init method for initial cash, stock prices, etc. makes more sense to be located in the TradingApp
+ rather than the ui panel like it is now.*
+- The model objects can then be passed into the ui panel for them to be
+ modified.
+
 
 
 ## User Stories
