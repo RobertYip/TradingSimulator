@@ -40,7 +40,7 @@ public class MainPanel extends JPanel implements ActionListener {
     private final ImageIcon stocksIcon = new ImageIcon("./data/stocks.jpg");
 
     private static final int WIDTH = 800;
-    private static final int HEIGHT = 400;
+    private static final int HEIGHT = 350;
     private static final int BUTTON_HEIGHT = 40;
 
     private DefaultTableModel tableModel;
@@ -199,15 +199,27 @@ public class MainPanel extends JPanel implements ActionListener {
     // MODIFIES: StockMarket
     // EFFECTS: load stocks into allStocks
     public void initStockMarket() {
-        Stock apl = new Stock("APL", "Aple Inc.", 13, 1.1);
-        Stock gms = new Stock("GMS", "GameShop", 30, 1.2);
-        Stock dmc = new Stock("DMC", "DMC Inc.", 12, 1.1);
-        Stock cmp = new Stock("CMP", "Computer Shop", 20, 1.3);
+        Stock amb = new Stock("AMB", "A Movie Branch", 2, 2);
+        Stock amz = new Stock("AMZ", "AhMaZon", 2213, 1.2);
+        Stock apl = new Stock("APL", "Aple Inc.", 13, 1.4);
+        Stock bb = new Stock("BB", "BackBerry", 7, 1.7);
+        Stock brk = new Stock("BRK", "Barkshire", 300, 1);
+        Stock gms = new Stock("GMS", "GameShop", 5, 4.8);
+        Stock ibc = new Stock("NOK", "Knokia", 2, 1.1);
+        Stock msf = new Stock("MSF", "MacroSoft", 20, 1.2);
+        Stock shap = new Stock("SHAP", "Shapify", 1500, 1.2);
+        Stock tsl = new Stock("TSL", "Taskla", 657, 1.2);
 
+        stockMarket.addStock(amb);
+        stockMarket.addStock(amz);
         stockMarket.addStock(apl);
+        stockMarket.addStock(bb);
+        stockMarket.addStock(brk);
         stockMarket.addStock(gms);
-        stockMarket.addStock(dmc);
-        stockMarket.addStock(cmp);
+        stockMarket.addStock(ibc);
+        stockMarket.addStock(msf);
+        stockMarket.addStock(shap);
+        stockMarket.addStock(tsl);
     }
 
     // EFFECTS: Initiates jsonWriter and jsonReader
@@ -325,7 +337,9 @@ public class MainPanel extends JPanel implements ActionListener {
         } catch (InsufficientQuantityException e) {
             messageBox("Insufficient quantity to sell.");
         }
-
+        if (portfolio.getCash() > 1000) {
+            messageBox("Congrats you beat the stock market, you now have $" + portfolio.getCash(), victorySound);
+        }
         table.setModel(loadPortfolio());
     }
 
@@ -367,7 +381,7 @@ public class MainPanel extends JPanel implements ActionListener {
 
     // EFFECTS: Exit game; stop running application
     public void quitGame() {
-        messageBox("Thanks for playing!", victorySound);
+        messageBox("Thanks for playing!");
         System.exit(1);
     }
 

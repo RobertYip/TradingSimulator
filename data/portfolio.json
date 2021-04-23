@@ -1,15 +1,15 @@
 {
     "holdings": [
         {
-            "buyPrice": 36,
-            "quantity": 1,
-            "stockTicker": "GMS"
+            "buyPrice": 14,
+            "quantity": 3,
+            "stockTicker": "APL"
         },
         {
-            "buyPrice": 18,
+            "buyPrice": 7,
             "quantity": 1,
-            "stockTicker": "DMC"
+            "stockTicker": "GMS"
         }
     ],
-    "cash": 46
+    "cash": 51
 }

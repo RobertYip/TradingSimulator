@@ -22,7 +22,7 @@ public class CommandPanel extends JPanel implements ActionListener {
     // EFFECTS: initializes command panel
     public CommandPanel(MainPanel mainPanel) {
         setPreferredSize(new Dimension(WIDTH, HEIGHT));
-        setBackground(Color.BLACK);
+        setBackground(new Color(0,102,0));
         initButtons();
         this.mainPanel = mainPanel;
     }
