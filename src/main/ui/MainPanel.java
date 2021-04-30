@@ -199,22 +199,24 @@ public class MainPanel extends JPanel implements ActionListener {
     // MODIFIES: StockMarket
     // EFFECTS: load stocks into allStocks
     public void initStockMarket() {
-        Stock amb = new Stock("AMB", "A Movie Branch", 2, 2);
-        Stock amz = new Stock("AMZ", "AhMaZon", 2213, 1.2);
-        Stock apl = new Stock("APL", "Aple Inc.", 13, 1.4);
-        Stock bb = new Stock("BB", "BackBerry", 7, 1.7);
-        Stock brk = new Stock("BRK", "Barkshire", 300, 1);
-        Stock gms = new Stock("GMS", "GameShop", 5, 4.8);
-        Stock ibc = new Stock("NOK", "Knokia", 2, 1.1);
-        Stock msf = new Stock("MSF", "MacroSoft", 20, 1.2);
-        Stock shap = new Stock("SHAP", "Shapify", 1500, 1.2);
-        Stock tsl = new Stock("TSL", "Taskla", 657, 1.2);
+        Stock amc = new Stock("AMC", "AMC Entertainment", 5, 2);
+        Stock amz = new Stock("AMZN", "Amazon", 3256, 1.1);
+        Stock apl = new Stock("AAPL", "Apple Inc.", 13, 1.4);
+        Stock bb = new Stock("BB", "BlackBerry", 7, 1.7);
+        Stock fb = new Stock("FB", "FaceBook, Inc.", 300, 1.1);
+        Stock gm = new Stock("GM", "General Motors", 49, 1.1);
+        Stock gms = new Stock("GME", "GameStop", 5, 4.8);
+        Stock ibc = new Stock("NOK", "Nokia", 2, 1.1);
+        Stock msf = new Stock("MSFT", "MicroSoft", 221, 1.1);
+        Stock shap = new Stock("SHOP", "Shopify", 1069, 1.1);
+        Stock tsl = new Stock("TSLA", "Tesla", 657, 1.2);
 
-        stockMarket.addStock(amb);
+        stockMarket.addStock(amc);
         stockMarket.addStock(amz);
         stockMarket.addStock(apl);
         stockMarket.addStock(bb);
-        stockMarket.addStock(brk);
+        stockMarket.addStock(fb);
+        stockMarket.addStock(gm);
         stockMarket.addStock(gms);
         stockMarket.addStock(ibc);
         stockMarket.addStock(msf);
